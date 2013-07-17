@@ -56,10 +56,18 @@ class Xbox360ControllerState
 		b = rawData[11] != 0;
 		x = rawData[12] != 0;
 		y = rawData[13] != 0;
-		if (rawData[14] < triggerDeadzone) rawData[14] = 0;
-		if (rawData[15] < triggerDeadzone) rawData[15] = 0;
-		leftTriggerNorm = (leftTrigger = (Std.int(rawData[14]) - triggerDeadzone)) / (TRIGGER_MAX_MAG - triggerDeadzone);
-		rightTriggerNorm = (rightTrigger = (Std.int(rawData[15]) - triggerDeadzone)) / (TRIGGER_MAX_MAG - triggerDeadzone);
+		if (rawData[14] < triggerDeadzone) {
+			leftTriggerNorm = 0;
+			leftTrigger = 0;
+		}else {
+			leftTriggerNorm = (leftTrigger = (Std.int(rawData[14]) - triggerDeadzone)) / (TRIGGER_MAX_MAG - triggerDeadzone);
+		}
+		if (rawData[15] < triggerDeadzone) {
+			rightTriggerNorm = 0;
+			rightTrigger = 0;
+		}else {
+			rightTriggerNorm = (rightTrigger = (Std.int(rawData[15]) - triggerDeadzone)) / (TRIGGER_MAX_MAG - triggerDeadzone);
+		}
 		leftStick.updateWith(rawData[16], rawData[17]);
 		rightStick.updateWith(rawData[18], rawData[19]);
 	}
