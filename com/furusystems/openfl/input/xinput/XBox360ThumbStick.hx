@@ -53,7 +53,12 @@ class XBox360ThumbStick
 		return new Point(xRaw, yRaw);
 	}
 	public inline function copyToPt(pt:Point):Void {
-		pt.setTo(xRaw, yRaw);
+		#if flash11
+        pt.setTo(xRaw, yRaw);
+        #else
+        pt.x = xRaw;
+        pt.y = yRaw;
+        #end
 	}
 	public inline function getAngleRad():Float {
 		return Math.atan2(yRaw, xRaw);
