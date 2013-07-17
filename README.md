@@ -14,10 +14,14 @@ controller.isConnected();
 ```
 
 ##Deadzones
-Set stick deadzones with a scalar. You can also set the deadzone precisely with an int within 32767
+Set individual stick deadzones with a scalar. You can also set the deadzone precisely with an int within 32767
 ```ActionScript
 controller.leftStick.deadZoneNorm = 0.2; 
 controller.rightStick.deadZoneNorm = 0.2;
+```
+Both triggers share the same deadzone setting, an int from 0 to 255
+```ActionScript
+controller.state.triggerDeadzone = 30;
 ```
 
 ##Game update
