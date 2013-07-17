@@ -8,6 +8,7 @@ import flash.geom.Point;
 class Xbox360ControllerState
 {
 	public static inline var TRIGGER_MAX_MAG:Int = 255;
+	public var triggerDeadzone:Int;
 	private var rawData:Array<Dynamic>;
 	
 	public var up:Bool;
@@ -37,6 +38,7 @@ class Xbox360ControllerState
 		leftStick = new XBox360ThumbStick();
 		rightStick = new XBox360ThumbStick();
 		rightTrigger = leftTrigger = 0;
+		triggerDeadzone = 0;
 	}
 	public inline function update(data:Array<Dynamic>) {
 		rawData = data;
@@ -54,8 +56,10 @@ class Xbox360ControllerState
 		b = rawData[11] != 0;
 		x = rawData[12] != 0;
 		y = rawData[13] != 0;
-		leftTriggerNorm = (leftTrigger = rawData[14]) / TRIGGER_MAX_MAG;
-		rightTriggerNorm = (rightTrigger = rawData[15]) / TRIGGER_MAX_MAG;
+		if (rawData[14] < triggerDeadzone) rawData[14] = 0;
+		if (rawData[15] < triggerDeadzone) rawData[15] = 0;
+		leftTriggerNorm = (leftTrigger = rawData[14] - triggerDeadzone) / (TRIGGER_MAX_MAG - triggerDeadzone);
+		rightTriggerNorm = (rightTrigger = rawData[15] - triggerDeadzone) / (TRIGGER_MAX_MAG - triggerDeadzone);
 		leftStick.updateWith(rawData[16], rawData[17]);
 		rightStick.updateWith(rawData[18], rawData[19]);
 	}
