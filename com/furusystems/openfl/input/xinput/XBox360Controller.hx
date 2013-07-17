@@ -9,6 +9,7 @@ import cpp.Lib;
  
 class XBox360Controller
 {
+	public static inline var MAX_VIBRATION_STRENGTH:Int = 65535;
 	private var _id:Int;
 	
 	private var _state:Xbox360ControllerState;
@@ -72,7 +73,20 @@ class XBox360Controller
 		return _vibrationLeft;
 	}
 	
+	function get_vibrationLeftNorm():Float 
+	{
+		return _vibrationLeft / MAX_VIBRATION_STRENGTH;
+	}
+	
+	function set_vibrationLeftNorm(value:Float):Float 
+	{
+		_vibrationLeft = Std.int(value * MAX_VIBRATION_STRENGTH);
+		setVibration(_vibrationLeft, _vibrationRight);
+		return _vibrationRight;
+	}
+	
 	public var vibrationLeft(get_vibrationLeft, set_vibrationLeft):Int;
+	public var vibrationLeftNorm(get_vibrationLeftNorm, set_vibrationLeftNorm):Float;
 	
 	function get_vibrationRight():Int 
 	{
@@ -86,7 +100,20 @@ class XBox360Controller
 		return _vibrationRight;
 	}
 	
+	function get_vibrationRightNorm():Float 
+	{
+		return _vibrationRight / MAX_VIBRATION_STRENGTH;
+	}
+	
+	function set_vibrationRightNorm(value:Float):Float 
+	{
+		_vibrationRight = Std.int(value * MAX_VIBRATION_STRENGTH);
+		setVibration(_vibrationLeft, _vibrationRight);
+		return _vibrationRight;
+	}
+	
 	public var vibrationRight(get_vibrationRight, set_vibrationRight):Int;
+	public var vibrationRightNorm(get_vibrationRightNorm, set_vibrationRightNorm):Float;
 	
 	static var xinput_vibrate = Lib.load("xinput", "vibrate", 3);
 	static var xinput_poll = Lib.load("xinput", "poll", 1);

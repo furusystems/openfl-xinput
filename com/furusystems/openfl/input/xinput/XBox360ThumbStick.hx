@@ -9,54 +9,54 @@ class XBox360ThumbStick
 {
 	public static inline var STICK_MAX_MAG:Int = 32767;
 	
-	public var rawX:Float;
-	public var rawY:Float;
+	public var xRaw:Float;
+	public var yRaw:Float;
 	public var xNorm:Float;
 	public var yNorm:Float;
 	
 	private var _deadZone:Float = 0;
 	public function new() 
 	{
-		rawX = rawY = xNorm = yNorm = 0;
+		xRaw = yRaw = xNorm = yNorm = 0;
 	}
 	public inline function updateWith(x:Float, y:Float):Void {
-		rawX = x;
-		rawY = y;
+		xRaw = x;
+		yRaw = y;
 		var mag:Float = getMagnitude();
 		var magRaw:Float = mag;
 		if (mag < deadZone) {
-			rawX = rawY = xNorm = yNorm = 0;
+			xRaw = yRaw = xNorm = yNorm = 0;
 		}else {
 			if (mag > STICK_MAX_MAG) mag = STICK_MAX_MAG;
 			mag -= deadZone;
 			var normalizedMagnitude = mag / (STICK_MAX_MAG - deadZone);
-			xNorm = (rawX / magRaw) * normalizedMagnitude;
-			yNorm = (rawY / magRaw) * normalizedMagnitude;
+			xNorm = (xRaw / magRaw) * normalizedMagnitude;
+			yNorm = (yRaw / magRaw) * normalizedMagnitude;
 		}
 	}
 	public inline function getMagnitudeSqr():Float {
-		return rawX * rawX + rawY * rawY;
+		return xRaw * xRaw + yRaw * yRaw;
 	}
 	public inline function getMagnitude():Float {
 		return Math.sqrt(getMagnitudeSqr());
 	}
 	public inline function normalizeEq():Void {
 		var mag:Float = getMagnitude();
-		rawX = rawX / mag;
-		rawY = rawY / mag;
+		xRaw = xRaw / mag;
+		yRaw = yRaw / mag;
 	}
 	public inline function normalizeToPt():Point {
 		var mag:Float = getMagnitude();
-		return new Point(rawX / mag, rawY/mag);
+		return new Point(xRaw / mag, yRaw/mag);
 	}
 	public inline function toPt():Point {
-		return new Point(rawX, rawY);
+		return new Point(xRaw, yRaw);
 	}
 	public inline function copyToPt(pt:Point):Void {
-		pt.setTo(rawX, rawY);
+		pt.setTo(xRaw, yRaw);
 	}
 	public inline function getAngleRad():Float {
-		return Math.atan2(rawY, rawX);
+		return Math.atan2(yRaw, xRaw);
 	}
 	
 	function get_deadZone():Float 

@@ -7,8 +7,6 @@ import flash.geom.Point;
  */
 class Xbox360ControllerState
 {
-	public static inline var MAX_VIBRATION_STRENGTH:Int = 65535;
-	public static inline var MIN_VIBRATION_STRENGTH:Int = 0;
 	public static inline var TRIGGER_MAX_MAG:Int = 255;
 	private var rawData:Array<Dynamic>;
 	
@@ -30,7 +28,9 @@ class Xbox360ControllerState
 	public var leftStick:XBox360ThumbStick;
 	public var rightStick:XBox360ThumbStick;
 	public var leftTrigger:Int;
+	public var leftTriggerNorm:Float;
 	public var rightTrigger:Int;
+	public var rightTriggerNorm:Float;
 	
 	public function new() 
 	{
@@ -54,8 +54,8 @@ class Xbox360ControllerState
 		b = rawData[11] != 0;
 		x = rawData[12] != 0;
 		y = rawData[13] != 0;
-		leftTrigger = rawData[14];
-		rightTrigger = rawData[15];
+		leftTriggerNorm = (leftTrigger = rawData[14]) / TRIGGER_MAX_MAG;
+		rightTriggerNorm = (rightTrigger = rawData[15]) / TRIGGER_MAX_MAG;
 		leftStick.updateWith(rawData[16], rawData[17]);
 		rightStick.updateWith(rawData[18], rawData[19]);
 	}
