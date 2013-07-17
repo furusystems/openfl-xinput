@@ -8,34 +8,34 @@ So far, done in a hurry, but works. Usage:
 ##Initialization
 Create a new controller with a unique controller ID (zero indexed)
 You should also check if it's connected. 
-```Haxe
+```ActionScript
 controller = new XBox360Controller(0);
 controller.isConnected();
 ```
 
 ##Deadzones
 Set stick deadzones with a scalar. You can also set the deadzone precisely with an int within 32767
-```Haxe
+```ActionScript
 controller.leftStick.deadZoneNorm = 0.2; 
 controller.rightStick.deadZoneNorm = 0.2;
 ```
 
 ##Game update
 During game updates, call poll() to update the controller state. The returned state is natively updated at 20hz so frequency here is not a must. 
-```Haxe
+```ActionScript
 controller.poll();
 ```
 
 Poll controller.state for buttons.
 Buttons are booleans, triggers are ints between 0 and 255, sticks are slightly more involved
-```Haxe
+```ActionScript
 controller.state.leftStick.xRaw; //The raw -32767 to 32767 range
 controller.state.leftStick.xNorm; //The range normalized to a bipolar 0-1 scalar, pre-adjusted by the deadzone
 ```
 
 ##Rumble
 The 360 controller has two vibrators. In my experience the left vibrator is "coarser" while the right vibrator is "finer". 
-```Haxe
+```ActionScript
 if (controller.state.leftBumper) {
 	controller.vibrationLeftNorm = controller.state.leftTriggerNorm;
 }else {
