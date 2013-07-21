@@ -1,10 +1,10 @@
 {
   "name": "xinput",
-  "url": "",
+  "url": "www.doomsday.no",
   "license": "MIT",
   "tags": [],
-  "description": "",
-  "version": "1.0.0",
+  "description": "Xbox360 controller support for the OpenFL Windows target",
+  "version": "1.1.0",
   "releasenote": "",
   "contributors": [""],
   "dependencies": {

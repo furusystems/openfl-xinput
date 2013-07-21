@@ -17,6 +17,10 @@ You should also check if it's connected.
 controller = new XBox360Controller(0);
 controller.isConnected();
 ```
+You can check if the controller is connected without creating an instance
+```ActionScript
+XBox360Controller.isControllerConnected(0);
+```
 
 ##Deadzones
 Set individual stick deadzones with a scalar. You can also set the deadzone precisely with an int within 32767
@@ -26,35 +30,55 @@ controller.rightStick.deadZoneNorm = 0.2;
 ```
 Both triggers share the same deadzone setting, an int from 0 to 255
 ```ActionScript
-controller.state.triggerDeadzone = 30;
+controller.triggerDeadzone = 30;
 ```
 
 ##Game update
-During game updates, call poll() to update the controller state. The returned state is natively updated at 20hz so frequency here is not a must. 
+During game updates, call poll() to update the controller state. 
 ```ActionScript
 controller.poll();
 ```
 
-Poll controller.state for buttons.
+Poll controller for buttons and values.
 Buttons are booleans, triggers are ints between 0 and 255, sticks are slightly more involved
 ```ActionScript
-controller.state.leftStick.xRaw; //The raw -32767 to 32767 range
-controller.state.leftStick.xNorm; //The range normalized to a bipolar 0-1 scalar, pre-adjusted by the deadzone
+controller.leftStick.xRaw; //The raw -32767 to 32767 range
+controller.leftStick.xNorm; //The range normalized to a bipolar 0-1 scalar, pre-adjusted by the deadzone
 ```
 
 ##Rumble
 The 360 controller has two vibrators. In my experience the left vibrator is "coarser" while the right vibrator is "finer". 
 ```ActionScript
-if (controller.state.leftBumper) {
-	controller.vibrationLeftNorm = controller.state.leftTriggerNorm;
+if (controller.leftBumper.isDown) {
+	controller.vibrationLeftNorm = controller.leftTriggerNorm;
 }else {
 	controller.vibrationLeft = 0; //Vibrations remain set so you have to manually turn them off
 }
-if (controller.state.rightBumper) {
-	controller.vibrationRightNorm = controller.state.rightTriggerNorm;
+if (controller.rightBumper.isDown) {
+	controller.vibrationRightNorm = controller.rightTriggerNorm;
 }else {
 	controller.vibrationRight = 0; 
 }
 ```
 The vibrators have quite a nice dynamic range; You can fine control it up to 65535. 
 I've seen games use this to "drive" the vibrators with audio signals. Quite cool.
+
+##Events
+XBox360Controller buttons are represented with Xbox360Button objects. To receive callbacks when a button is pressed or released, do the following:
+```ActionScript
+function onButtonChange(btn:Xbox360Button):Void 
+{
+	trace(btn.buttonType, btn.controller.id, btn.isDown);
+}
+
+controller.a.onPressed = onButtonChange;
+controller.a.onReleased = onButtonChange;
+```
+Xbox360Button.buttonType is one of the types found in Xbox360ButtonType.
+
+For convenience, Xbox360Controller has a method for setting listeners on every button.
+
+```ActionScript
+controller.setButtonListeners(onButtonDown, onButtonUp);
+//to clear the listeners, call again with no arguments, or use clearButtonListeners()
+```
