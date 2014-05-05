@@ -3,7 +3,7 @@ openfl-xinput
 
 XInput/Xbox 360 controller support for OpenFL on Windows.
 For the Windows target, given that the user has a 360 controller, here are the key benefits over the OpenFL JoystickEvent:
-* Individual data for each trigger. Under DirectInput/JoystickEvent you get both triggers as a single bipolar axis (useless)
+* Individual data for each trigger. Under DirectInput you get both triggers as a single bipolar axis (useless)
 * Individual control over each vibrator. Allows for a wide range of haptic feedback.
 * Controller hotswapping. Your game will happily run with or without a controller connected. A controller may get dropped and reconnected to no further detriment to your game.
 * Simplified API. The XBox360Controller class is a one-stop, direct way to get at the game controller.
